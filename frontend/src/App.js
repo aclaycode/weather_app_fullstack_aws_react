@@ -24,29 +24,31 @@ function App() {
     setCity(e.target.value);
   };
 
-  // Handler for Search button click
-  const handleSearch = async () => {
-    if (city.trim() === '') {
-      alert('Please enter a city name');
-      return;
-    }
+  // AWS Lamda funciton URL
+const lambdaApiUrl = 'https://zijp8jy0m5.execute-api.us-east-2.amazonaws.com/dev/weatherApi';
 
-    try {
-      const apiKey = '2457ab7c781c9a65bfc653355bab34cd';
-      const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=imperial`;
-      const response = await axios.get(url);
-      const data = response.data;
+const handleSearch = async () => {
+  if (city.trim() === '') {
+    alert('Please enter a city name');
+    return;
+  }
 
-      setWeather({
-        city: data.name,
-        temp: data.main.temp,
-        description: data.weather[0].description,
-      });
-    } catch (error) {
-      console.error(error);
-      alert('Could not fetch weather data. Check the city name or try again later.');
-    }
-  };
+  try {
+    // Call your Lambda API Gateway endpoint
+    const response = await axios.get(`${lambdaApiUrl}?q=${city}`); // HTTP get request to your Lambda API with the city as a query parameter
+    const data = response.data; // gets weather data from response
+
+    setWeather({
+      city: data.name,
+      temp: data.main.temp,
+      description: data.weather[0].description,
+    });
+  } catch (error) {
+    console.error(error);
+    alert('Could not fetch weather data. Check the city name or try again later.');
+  }
+};
+
 
   return (
     <div className="App">
