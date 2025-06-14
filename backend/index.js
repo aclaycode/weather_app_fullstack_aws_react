@@ -1,55 +1,56 @@
-const axios = require('axios'); //makes HTTP requests
+const axios = require('axios');
 
-//Lambda function
 exports.handler = async (event) => {
-  const city = event.queryStringParameters?.q; //get city from API gateway event
-  const apiKey = process.env.OPENWEATHER_API_KEY; //Get OpenWeather API key
+  const city = event.queryStringParameters?.q;
+  const apiKey = process.env.OPENWEATHER_API_KEY;
 
-    //CORS headers to include in every response
+  // Allow all CORS requests from localhost during development
   const corsHeaders = {
-    'Access-Control-Allow-Origin': 'http://localhost:3000',  // restrict to your React app URL
+    'Access-Control-Allow-Origin': 'http://localhost:3000',
     'Access-Control-Allow-Headers': 'Content-Type,Authorization',
     'Access-Control-Allow-Methods': 'GET,OPTIONS',
   };
 
-  //Error if no city provided in request
+  // Handle preflight CORS
+  if (event.httpMethod === 'OPTIONS') {
+    return {
+      statusCode: 200,
+      headers: corsHeaders,
+      body: JSON.stringify({ message: 'Preflight OK' }),
+    };
+  }
+
   if (!city) {
     return {
       statusCode: 400,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      },
+      headers: corsHeaders,
       body: JSON.stringify({ error: 'Missing city parameter' }),
     };
   }
 
   try {
-    // request to OpenWeather API to get weather
-    const response = await axios.get(
-      `https://api.openweathermap.org/data/2.5/weather`,
-      {
-        params: {
-          q: city,
-          appid: apiKey,
-          units: 'imperial',
-        },
-      }
-    );
+    const response = await axios.get('https://api.openweathermap.org/data/2.5/weather', {
+      params: {
+        q: city,
+        appid: apiKey,
+        units: 'imperial',
+      },
+    });
 
     return {
       statusCode: 200,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      },
+      headers: corsHeaders,
       body: JSON.stringify(response.data),
     };
   } catch (error) {
+    console.error('Error fetching weather data:', error?.response?.data || error.message);
     return {
       statusCode: error.response?.status || 500,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      },
-      body: JSON.stringify({ error: 'Failed to fetch weather data' }),
+      headers: corsHeaders,
+      body: JSON.stringify({
+        error: 'Failed to fetch weather data',
+        details: error.response?.data || error.message,
+      }),
     };
   }
 };
