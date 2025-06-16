@@ -4,12 +4,18 @@ exports.handler = async (event) => {
   const city = event.queryStringParameters?.q;
   const apiKey = process.env.OPENWEATHER_API_KEY;
 
-  // Allow all CORS requests from localhost during development
-  const corsHeaders = {
-    'Access-Control-Allow-Origin': 'http://localhost:3000',
-    'Access-Control-Allow-Headers': 'Content-Type,Authorization',
-    'Access-Control-Allow-Methods': 'GET,OPTIONS',
-  };
+const allowedOrigins = [
+  'http://localhost:3000', // for dev/testing
+  'https://d2bd1im626ftje.cloudfront.net' //cloudfront domain
+];
+
+const origin = event.headers.origin;
+
+const corsHeaders = {
+  'Access-Control-Allow-Origin': allowedOrigins.includes(origin) ? origin : '',
+  'Access-Control-Allow-Headers': 'Content-Type,Authorization',
+  'Access-Control-Allow-Methods': 'GET,OPTIONS',
+};
 
   // Handle preflight CORS
   if (event.httpMethod === 'OPTIONS') {
