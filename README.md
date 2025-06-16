@@ -26,7 +26,7 @@ This is a fully deployed, full-stack weather application that fetches live weath
 
 ---
 
-🛠Project Setup & Steps
+##Project Setup & Steps
 
 ### Frontend (React)
 
