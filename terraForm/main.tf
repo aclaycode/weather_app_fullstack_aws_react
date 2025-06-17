@@ -26,7 +26,7 @@ resource "aws_lambda_function" "my_lambda" {
   function_name    = "weather-app-backend-lambda"
   role             = aws_iam_role.lambda_exec_role.arn
   handler          = "index.handler"
-  runtime          = "nodejs18.x"
+  runtime          = "nodejs20.x"
   filename         = "backend.zip"
-  source_code_hash = filebase64sha256("../backend/backend.zip")
+  source_code_hash = filebase64sha256("backend.zip")
 }
