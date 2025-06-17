@@ -12,7 +12,7 @@ This is a fully deployed, full-stack weather application that fetches live weath
 - CORS-compliant backend-to-frontend communication
 - Secure API key management using Lambda environment variables
 - Frontend deployed to S3 and served via CloudFront
-- Optional Infrastructure-as-Code setup using Terraform
+- Infrastructure-as-Code setup using Terraform
 
 ---
 
