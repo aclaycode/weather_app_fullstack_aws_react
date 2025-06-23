@@ -22,31 +22,26 @@ This is a fully deployed, full-stack weather application that fetches live weath
 - **Backend:** Node.js (AWS Lambda)
 - **API Routing:** AWS API Gateway
 - **Deployment:** Amazon S3 + CloudFront
-- **Infra as Code (optional):** Terraform
+- **IaC:** Terraform
 
 ---
 
-##Project Setup & Steps
+## Project Setup & Steps
 
 ### Frontend (React)
 
-- Created using:
-  ```bash
-  npx create-react-app weather-frontend
-  ```
 Built a user interface that:
--Accepts city input
--Displays weather data
+- Accepts city input
+- Displays weather data
+- Initially used direct OpenWeather API call with API key exposed
+- Refactored frontend to call a backend endpoint instead
 
-Initially used direct OpenWeather API call with API key exposed
-
-Refactored frontend to call a backend endpoint instead
 Now uses:
 ```js
 fetch("https://your-api-id.execute-api.us-east-2.amazonaws.com/dev/weatherApi?q=Chicago")
 ```
 
-Verified frontend works with backend both locally and in production
+- Verified frontend works with backend both locally and in production
 
 Production build generated using:
 ```bash
@@ -55,26 +50,26 @@ npm run build
 
 ### Backend (AWS Lambda)
 Node.js Lambda function that:
--Accepts query param ?q=CityName
--Uses an environment variable for OpenWeather API key
--Makes request to OpenWeather API
--Returns JSON weather data
--Handles CORS (localhost + CloudFront)
--Uploaded zipped Lambda code to AWS
+- Accepts query param ?q=CityName
+- Uses an environment variable for OpenWeather API key
+- Makes request to OpenWeather API
+- Returns JSON weather data
+- Handles CORS (localhost + CloudFront)
+- Uploaded zipped Lambda code to AWS
 
 ### API Gateway
-Created HTTP API or REST API
-Integrated Lambda function as backend
-Enabled CORS with:
-Access-Control-Allow-Origin: localhost + CloudFront
-Allowed Methods: GET, OPTIONS
-Allowed Headers: Content-Type, Authorization, etc.
-Deployed to /dev stage
-Working endpoint: https://your-api-id.execute-api.us-east-2.amazonaws.com/dev/weatherApi?q=CityName
+- Created HTTP API or REST API
+- Integrated Lambda function as backend
+- Enabled CORS with:
+- Access-Control-Allow-Origin: localhost + CloudFront
+- Allowed Methods: GET, OPTIONS
+- Allowed Headers: Content-Type, Authorization, etc.
+- Deployed to /dev stage
+- Working endpoint: https://your-api-id.execute-api.us-east-2.amazonaws.com/dev/weatherApi?q=CityName
 
 ### Frontend-Backend Integration
-React app fetches weather data through the deployed API Gateway endpoint
-Fully integrated and confirmed working
+- React app fetches weather data through the deployed API Gateway endpoint
+- Fully integrated and confirmed working
 
 ### Frontend Deployment (S3 + CloudFront)
 Production ready build:
