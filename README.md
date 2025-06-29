@@ -72,38 +72,61 @@ Node.js Lambda function that:
 - Fully integrated and confirmed working
 
 ### Frontend Deployment (S3 + CloudFront)
-Production ready build:
+
+#### Production ready build:
 ```bash
 npm run build
 ```
-S3:
--Created bucket (no static website hosting)
--Uploaded contents of /build folder
--CloudFront:
--Set origin to S3 bucket
--Set default root object to index.html
--SSL automatically included with CloudFront domain (no ACM setup required)
--Final URL: https://d2bd1im626ftje.cloudfront.net
 
-###Why Use CloudFront with S3?
--Global CDN: Fast loading for users worldwide
--Free HTTPS: Automatic SSL via CloudFront domain
--Better Caching: More control and performance
--Reduced S3 Load: CloudFront caches assets
--Scalability: Handles sudden traffic spikes
--Security: Support for WAF, DDoS protection, signed URLs
+#### S3:
+- Created bucket (no static website hosting)
+- Uploaded contents of /build folder
 
-###Backend via Terraform
-Infrastructure-as-Code lets you version and redeploy AWS resources easily.
-TO DO NEXT:
--Write Terraform configs for:
--Lambda function
--API Gateway
--IAM Role with execution permissions
--Lambda environment variables
+#### CloudFront:
+- Set origin to S3 bucket
+- Set default root object to index.html (front end file)
+- SSL automatically included with CloudFront domain (no ACM setup required)
+- Final URL: https://d2bd1im626ftje.cloudfront.net
 
-Then simply run
-```bash
-terraform init
-terraform apply
-```
+#### Why Use CloudFront with S3?
+- Global CDN: Fast loading for users worldwide
+- Free HTTPS: Automatic SSL via CloudFront domain
+- Better Caching: More control and performance
+- Reduced S3 Load: CloudFront caches assets
+- Scalability: Handles sudden traffic spikes
+- Security: Support for WAF, DDoS protection, signed URLs
+
+#### AWS Configuration
+
+All AWS resources were initially set up **manually via the AWS Console**, not using Terraform. This was done intentionally to:
+
+- Gain exposure to key AWS services used in serverless applications (e.g., Lambda, API Gateway, IAM)
+- Learn to navigate and configure resources through the AWS Management Console
+- Develop a better understanding of how individual AWS components work together
+- Reinforce concepts by building the infrastructure step-by-step
+- Get comfortable working directly within the AWS ecosystem
+
+#### Terraform Integration
+
+After successfully deploying the project through the console, Terraform was introduced to:
+
+- Practice Infrastructure as Code (IaC) using real-world resources
+- Understand how to codify, version, and reuse AWS configurations
+- Gain exposure to how Terraform interacts with existing AWS infrastructure
+- Demonstrate an example use-case: updating the Lambda function’s **Node.js runtime from 18 to 20** using Terraform
+
+This hyrbrid approach provided hands-on learning both in the AWS Console and through declarative infrasture automation.
+
+---
+### Key Learnings
+
+This project provided valuable full-stack and cloud deployment experience, with a strong emphasis on modern development practices. Key takeaways include:
+
+- **End-to-End Ownership:** Managed the full lifecycle of a web application—from frontend development to backend deployment and infrastructure setup.
+- **Cloud Fluency:** Gained hands-on exposure to core AWS services including S3, Lambda, API Gateway, IAM, and CloudFront, reinforcing how they interconnect.
+- **Serverless Architecture:** Built and deployed a fully serverless backend using AWS Lambda with environment-based configuration and CORS handling.
+- **Infrastructure-as-Code (IaC):** Used Terraform to codify, update, and manage cloud resources programmatically, including updating Lambda runtime versions.
+- **Security & Scalability Awareness:** Implemented HTTPS, API key protection, and performance optimization through CDN integration and caching.
+- **Practical Debugging & Integration:** Addressed real-world challenges like cross-origin resource sharing (CORS), environment variable setup, and deployment verification across environments.
+
+This project reflects both technical implementation and thoughtful process, with a focus on maintainability, security, and adaptability in real-world cloud ecosystems.
