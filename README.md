@@ -1,6 +1,11 @@
-# Weather App – Full Stack Project (React + AWS Lambda + API Gateway + CloudFront)
+# Serverless Weather App – React Frontend + AWS (Lambda, API Gateway, S3, CloudFront)
 
 This is a fully deployed, full-stack weather application that fetches live weather data using the OpenWeather API. The frontend is built with **React**, and the backend is powered by **AWS Lambda** and **API Gateway**, all deployed via **S3 and CloudFront** for high performance and scalability.
+
+---
+
+View the live weather app: [Weather App](https://d2bd1im626ftje.cloudfront.net/)
+
 
 ---
 
