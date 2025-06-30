@@ -6,12 +6,11 @@ This is a fully deployed, full-stack weather application that fetches live weath
 
 View the live weather app: [Weather App](https://d2bd1im626ftje.cloudfront.net/)
 
-
 ---
 
 ## Features
 
-- Search for current weather by city
+- Search for current weather by city (e.g. moline)
 - Serverless backend using AWS Lambda
 - API Gateway integration for routing
 - CORS-compliant backend-to-frontend communication
@@ -28,6 +27,12 @@ View the live weather app: [Weather App](https://d2bd1im626ftje.cloudfront.net/)
 - **API Routing:** AWS API Gateway
 - **Deployment:** Amazon S3 + CloudFront
 - **IaC:** Terraform
+
+---
+
+## Architecture
+
+![Architecture Diagram](https://github.com/aclaycode/weather_app_full_stack/blob/2e28a184830a4886f5bb934e886ff588f7991988/diagram/Weather_App_Architecture_Diagram.png)
 
 ---
 
