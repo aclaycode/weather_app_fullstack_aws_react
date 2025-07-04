@@ -2,15 +2,18 @@
 
 This is a fully deployed, full-stack weather application that fetches live weather data using the OpenWeather API. The frontend is built with **React**, and the backend is powered by **AWS Lambda** and **API Gateway**, all deployed via **S3 and CloudFront** for high performance and scalability.
 
----
-
 View the live weather app: [Weather App](https://d2bd1im626ftje.cloudfront.net/)
 
+---
+## How to Use
+1. Type in city only (e.g. moline)
+2. Click Search button
+3. View current weather data
 ---
 
 ## Features
 
-- Search for current weather by city (e.g. moline)
+- Search for current weather by city
 - Serverless backend using AWS Lambda
 - API Gateway integration for routing
 - CORS-compliant backend-to-frontend communication
@@ -24,6 +27,7 @@ View the live weather app: [Weather App](https://d2bd1im626ftje.cloudfront.net/)
 
 - **Frontend:** React (Create React App), JavaScript, HTML, CSS
 - **Backend:** Node.js (AWS Lambda)
+- **HTTP Client:** Axios (for frontend API calls)
 - **API Routing:** AWS API Gateway
 - **Deployment:** Amazon S3 + CloudFront
 - **IaC:** Terraform
@@ -32,7 +36,7 @@ View the live weather app: [Weather App](https://d2bd1im626ftje.cloudfront.net/)
 
 ## Architecture
 
-![Architecture Diagram](https://github.com/aclaycode/weather_app_full_stack/blob/2e28a184830a4886f5bb934e886ff588f7991988/diagram/Weather_App_Architecture_Diagram.png)
+![Architecture Diagram](https://github.com/aclaycode/weather_app_fullstack_aws_react/blob/5835989bff0ec8f20e45679c027be6e9ec746b5b/diagram/Weather_App_Architecture_Diagram.png)
 
 ---
 
@@ -59,23 +63,33 @@ npm run build
 ```
 
 ### Backend (AWS Lambda)
-Node.js Lambda function that:
-- Accepts query param ?q=CityName
-- Uses an environment variable for OpenWeather API key
-- Makes request to OpenWeather API
-- Returns JSON weather data
-- Handles CORS (localhost + CloudFront)
-- Uploaded zipped Lambda code to AWS
+
+Node.js Lambda function that serves as the backend API endpoint:
+
+- Accepts HTTP `GET` requests with a query parameter: `?q=CityName`
+- Uses an environment variable to securely access the OpenWeather API key
+- Makes a request to OpenWeather’s `/data/2.5/weather` endpoint with the city name
+- Extracts relevant fields (city name, temperature, weather description) and returns them as JSON
+- Handles **CORS** by:
+  - Validating `Origin` header against a whitelist (localhost + CloudFront domain)
+  - Responding to `OPTIONS` preflight requests with proper CORS headers
+  - Setting `Access-Control-Allow-Origin`, `Allow-Headers`, and `Allow-Methods` dynamically
+- Zipped and uploaded manually to Lambda via AWS Console
+
 
 ### API Gateway
-- Created HTTP API or REST API
-- Integrated Lambda function as backend
-- Enabled CORS with:
-- Access-Control-Allow-Origin: localhost + CloudFront
-- Allowed Methods: GET, OPTIONS
-- Allowed Headers: Content-Type, Authorization, etc.
-- Deployed to /dev stage
-- Working endpoint: https://your-api-id.execute-api.us-east-2.amazonaws.com/dev/weatherApi?q=CityName
+
+- Created an **HTTP API** (not REST API) to serve as the entry point for frontend requests
+- Integrated with the **AWS Lambda** function using Lambda proxy integration
+- **CORS handled entirely in the Lambda response**, including:
+  - `Access-Control-Allow-Origin`: Dynamically set to allow `http://localhost:3000` and CloudFront domain
+  - `Access-Control-Allow-Methods`: `GET`, `OPTIONS`
+  - `Access-Control-Allow-Headers`: `Content-Type`, `Authorization`, etc.
+- No need to configure CORS in API Gateway console (since Lambda handles it)
+- Deployed to `/dev` stage
+- Working endpoint:  
+  `https://zijp8jy0m5.execute-api.us-east-2.amazonaws.com/dev/weatherApi?q=CityName`
+
 
 ### Frontend-Backend Integration
 - React app fetches weather data through the deployed API Gateway endpoint
@@ -125,7 +139,7 @@ After successfully deploying the project through the console, Terraform was intr
 - Gain exposure to how Terraform interacts with existing AWS infrastructure
 - Demonstrate an example use-case: updating the Lambda function’s **Node.js runtime from 18 to 20** using Terraform
 
-This hyrbrid approach provided hands-on learning both in the AWS Console and through declarative infrasture automation.
+This hybrid approach provided hands-on learning both in the AWS Console and through declarative infrasture automation.
 
 ---
 ### Key Learnings
