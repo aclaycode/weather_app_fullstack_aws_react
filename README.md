@@ -42,9 +42,7 @@ View the live weather app: [Weather App](https://d2bd1im626ftje.cloudfront.net/)
 
 ## Project Setup & Steps
 
-### Frontend (React)
-
-Built a user interface that:
+### Frontend
 - Accepts city input
 - Displays weather data
 - Initially used direct OpenWeather API call with API key exposed
@@ -52,8 +50,10 @@ Built a user interface that:
 
 Now uses:
 ```js
-fetch("https://your-api-id.execute-api.us-east-2.amazonaws.com/dev/weatherApi?q=Chicago")
+// Fetches weather data from AWS API Gateway (Lambda beckend) using the entered city
+axios.get(`${lambdaApiUrl}?q=${city}`);
 ```
+
 
 - Verified frontend works with backend both locally and in production
 
